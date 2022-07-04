@@ -47,12 +47,12 @@ export const getHotel = async (req, res) => {
   }
 };
 
-export const getHotels = async (req, res) => {
+export const getHotels = async (req, res,next) => {
   try {
     const hotel = new Hotel.find();
     res.status(200).json(hotel);
     console.log("Entry was found");
   } catch (err) {
-    res.status(500).json(err);
+    next(err)
   }
 };
