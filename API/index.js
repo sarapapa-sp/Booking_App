@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import authroute from "./routes/auth.js";
 import hotelroute from "./routes/hotels.js";
-
+import userroute from "./routes/user.js";
+import cookieParser from "cookie-parser"
 const app = express();
 dotenv.config();
 const connect = async () => {
@@ -21,12 +22,12 @@ mongoose.connection.on("disconnected", () => {
 });
 
 //middlewares
-
+app.use(cookieParser())
 app.use(express.json());
 
 app.use("/api/auth", authroute);
 app.use("/api/hotels", hotelroute);
-// app.use("/api/auth", authroute);
+app.use("/api/users", userroute);
 // app.use("/api/auth", authroute);
 app.use((err, req, res, next) => {
   const errorStatus = err.status;

@@ -41,7 +41,7 @@ export const getHotel = async (req, res) => {
   try {
     const hotel = new Hotel.findById(req.params.id);
     res.status(200).json(hotel);
-    console.log("Entry was found" + id);
+    console.log("Entry was found" + req.params.id);
   } catch (err) {
     res.status(500).json(err);
   }
