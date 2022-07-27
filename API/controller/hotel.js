@@ -39,7 +39,7 @@ export const deleteHotel = async (req, res) => {
 
 export const getHotel = async (req, res) => {
   try {
-    const hotel = new Hotel.findById(req.params.id);
+    const hotel = await Hotel.findById(req.params.id);
     res.status(200).json(hotel);
     console.log("Entry was found" + req.params.id);
   } catch (err) {
@@ -49,7 +49,7 @@ export const getHotel = async (req, res) => {
 
 export const getHotels = async (req, res,next) => {
   try {
-    const hotel = new Hotel.find();
+    const hotel = await Hotel.find();
     res.status(200).json(hotel);
     console.log("Entry was found");
   } catch (err) {
