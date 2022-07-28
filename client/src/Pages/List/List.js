@@ -31,6 +31,7 @@ function List(props) {
                             <input
                                 type="text"
                                 placeholder={destination}
+                                disabled
                             />
                         </div>
                         <div className="list-search-item">
@@ -118,6 +119,15 @@ function List(props) {
                     </div>
                     <div className="list-result">
                             <SearchItem />
+                        <SearchItem />
+                        <SearchItem />
+                        <SearchItem />
+                        <SearchItem />
+                        <SearchItem />
+                        <SearchItem />
+                        <SearchItem />
+
+
                     </div>
                 </div>
             </div>
