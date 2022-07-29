@@ -1,6 +1,8 @@
 import "./SearchItem.css";
+import {Link} from "react-router-dom";
 
-function SearchItem(props) {
+function SearchItem({hotel}) {
+    console.log(hotel)
     return (
         <div className="search">
             <img
@@ -11,10 +13,10 @@ function SearchItem(props) {
             />
             <div className="search-desc">
                 <h1 className="search-title">
-                    Tower Street Apartments
+                    {hotel.name}
                 </h1>
                 <span className="search-distance">
-                    500m from the center
+                    {hotel.distance}
                 </span>
                 <span className="search-taxiop">
                     Free Airport Taxi
@@ -23,7 +25,7 @@ function SearchItem(props) {
                     Stdio Apartment with AIr continining
                 </span>
                 <span className="search-features">
-                    ENtire stio 1 bathroom 21m2 1 full bed
+                    {hotel.desc}
                 </span>
                 <span className="search-cancel">
                     Free Cancellation
@@ -34,21 +36,27 @@ function SearchItem(props) {
                 </span>
             </div>
             <div className="search-detail">
-                <div className="search-rating">
-                    <span>Excellent</span>
-                    <button>8.9</button>
-                </div>
+                {
+                    hotel.rating &&
+                    <div className="search-rating">
+                        <span>Excellent</span>
+                        <button>{hotel.rating}</button>
+                    </div>
+                }
 
                 <div className="search-details-text">
                     <span className="search-price">
-                        $123
+                        ${hotel.cheapestPrice}
                     </span>
                     <span className="search-taxi--op">
                         Includes taxes and fees
                     </span>
-                    <button className="search-check-btn">
-                        See Availability
-                    </button>
+                    <Link to={`/hotel/${hotel._id}`}>
+                        <button className="search-check-btn">
+                            See Availability
+                        </button>
+
+                    </Link>
                 </div>
 
             </div>

@@ -6,10 +6,19 @@ import {faCircleArrowLeft, faCircleArrowRight, faCircleXmark, faLocationDot} fro
 import MailList from "../../Components/MailList/MailList";
 import Footer from "../../Components/Footer/Footer";
 import {useState} from "react";
+import {useLocation} from "react-router-dom";
+import useFetch from "../../Hooks/useFetch";
 
 function Hotel(props) {
     const [slidenumber , setSlidenumber] = useState(0)
     const [open,setOpen] = useState(false)
+    const location = useLocation()
+    const id = location.pathname.split("/")[2]
+
+    const {data,loading,error} = useFetch(`http://localhost:8080/api/hotels/find/${id}`)
+    console.log(data)
+
+    // console.log(_id)
     const photos = [
         {
             src:"https://cf.bstatic.com/xdata/images/city/max500/957801.webp?k=a969e39bcd40cdcc21786ba92826063e3cb09bf307bcfeac2aa392b838e9b7a5&o="
@@ -47,23 +56,26 @@ function Hotel(props) {
         <div>
             <Navbar />
             <Header type="list" />
-            <div className="hotel-container">
+            {
+                loading ? "Loading please wait" :
+                <>
+                <div className="hotel-container">
                 {open &&
                     <div className="slider-div">
                         <FontAwesomeIcon
 
                             icon={faCircleXmark}
-                            onClick={()=>setOpen(false)}
+                            onClick={() => setOpen(false)}
                             className="slider-close"
                         />
                         <FontAwesomeIcon
                             className="slider-arrow"
                             icon={faCircleArrowLeft}
-                            onClick={()=> handleMove("l")}
+                            onClick={() => handleMove("l")}
                         />
                         <div className="slider-wrapper">
                             <img
-                                src={photos[slidenumber].src}
+                                src={data.photos[slidenumber].src}
                                 alt=""
                                 className="slider-img"
                             />
@@ -71,41 +83,41 @@ function Hotel(props) {
                         <FontAwesomeIcon
                             className="slider-arrow"
                             icon={faCircleArrowRight}
-                            onClick={()=> handleMove("r")}
+                            onClick={() => handleMove("r")}
                         />
                     </div>
                 }
                 <div className="hotel-wrapper">
                     <button>Book Now</button>
                     <h1 className="hotel-title">
-                        Grant Hotel
+                        {data.name}
                     </h1>
                     <div className="hotel-address">
-                        <FontAwesomeIcon icon={faLocationDot} />
-                        <span>Elton St 125 New York</span>
+                        <FontAwesomeIcon icon={faLocationDot}/>
+                        <span>{data.address}</span>
                     </div>
                     <span className="hotel-distance">
-                        Excellent location - 500 m
+                        Excellent location - {data.distance}m away from center
                     </span>
                     <span className="hotel-price-high">
-                        Book a stay over $414 at this property and get a free airport taxi
+                        Book a stay over ${data.cheapestPrice} at this property and get a free airport taxi
                     </span>
                     <div className="hotel-imgs">
-                        {photos.map(
-                            (hotel,i) => <div
-                                onClick={()=>handleOpen(i)}
-                                className="hotel-img-wrapper"> <img src={hotel.src} alt="hotel" className="hotel-img" /></div>
+                        {data.photos?.map(
+                            (hotel, i) => <div
+                                onClick={() => handleOpen(i)}
+                                className="hotel-img-wrapper"><img src={hotel.src} alt="hotel" className="hotel-img"/>
+                            </div>
                         )}
 
                     </div>
                     <div className="hotel-details">
                         <div className="hotel-detail-text">
                             <h1 className="hotel-detail-title">
-                                Stay in the heart of the Krakow
+                                {data.title}
                             </h1>
                             <p className="hotel-desc">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse explicabo tenetur vero. Delectus doloremque ducimus eligendi illo porro ut? Error exercitationem impedit labore maxime natus nobis praesentium quod repellat unde!
-                            </p>
+                                {data.desc}</p>
                         </div>
                         <div className="hotel-detail-price">
                             <h1>
@@ -121,9 +133,11 @@ function Hotel(props) {
                         </div>
                     </div>
                 </div>
-                <MailList />
-                <Footer />
+                <MailList/>
+                <Footer/>
             </div>
+                </>
+            }
 
         </div>
     );
