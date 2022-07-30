@@ -8,6 +8,7 @@ import {
 import Home from "./Pages/Home/Home";
 import List from "./Pages/List/List";
 import Hotel from "./Pages/SingleHotel/Hotel";
+import Login from "./Pages/Login/Login";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/hotel" element={<List />}></Route>
             <Route path="/hotel/:id" element={<Hotel />}></Route>
+            <Route path="/login" element={<Login />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

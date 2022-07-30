@@ -8,6 +8,7 @@ import {useContext, useState} from "react";
 import DateRange from "react-date-range/dist/components/DateRange"; // theme css file
 import {useNavigate} from "react-router-dom"
 import {SearchContext} from "../../Context/SearchContext";
+import {AuthContext} from "../../Context/AuthContext";
 
 function Header({type}) {
     const [destination,setDestination] = useState("")
@@ -39,6 +40,7 @@ function Header({type}) {
     }
 
     const {dispatch} = useContext(SearchContext)
+    const {user} = useContext(AuthContext)
 
     const handleChange = () => {
         dispatch({type:"NEW_SEARCH",payload:{destination,dates,options}})
@@ -79,7 +81,9 @@ function Header({type}) {
                     <h1 className="header-title">A lifetime of discounts ? It's Genius</h1>
                     <p className="header-desc">Get rewarded for our travels - unlock instant savings of 10% or win a
                         free flight with a afree lamabooking account</p>
+                        { !user &&
                     <button className="header-btn">Sign In / Register</button>
+                        }
                     <div className="header-search">
                         {/*Input for place*/}
                         <div className="header-search-item">
