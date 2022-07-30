@@ -5,9 +5,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleArrowLeft, faCircleArrowRight, faCircleXmark, faLocationDot} from "@fortawesome/free-solid-svg-icons";
 import MailList from "../../Components/MailList/MailList";
 import Footer from "../../Components/Footer/Footer";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {useLocation} from "react-router-dom";
 import useFetch from "../../Hooks/useFetch";
+import {SearchContext} from "../../Context/SearchContext";
 
 function Hotel(props) {
     const [slidenumber , setSlidenumber] = useState(0)
@@ -16,26 +17,7 @@ function Hotel(props) {
     const id = location.pathname.split("/")[2]
 
     const {data,loading,error} = useFetch(`http://localhost:8080/api/hotels/find/${id}`)
-    console.log(data)
 
-    // console.log(_id)
-    const photos = [
-        {
-            src:"https://cf.bstatic.com/xdata/images/city/max500/957801.webp?k=a969e39bcd40cdcc21786ba92826063e3cb09bf307bcfeac2aa392b838e9b7a5&o="
-        },
-        {
-            src:"https://cf.bstatic.com/xdata/images/city/max500/957801.webp?k=a969e39bcd40cdcc21786ba92826063e3cb09bf307bcfeac2aa392b838e9b7a5&o="
-        },
-        {
-            src:"https://cf.bstatic.com/xdata/images/city/max500/957801.webp?k=a969e39bcd40cdcc21786ba92826063e3cb09bf307bcfeac2aa392b838e9b7a5&o="
-        },
-        {
-            src:"https://cf.bstatic.com/xdata/images/city/max500/957801.webp?k=a969e39bcd40cdcc21786ba92826063e3cb09bf307bcfeac2aa392b838e9b7a5&o="
-        },
-        {
-            src:"https://cf.bstatic.com/xdata/images/city/max500/957801.webp?k=a969e39bcd40cdcc21786ba92826063e3cb09bf307bcfeac2aa392b838e9b7a5&o="
-        }
-    ]
 
     const handleMove = (move) => {
         let newslidenumber ;
@@ -52,6 +34,17 @@ function Hotel(props) {
 
         setSlidenumber(i)
     }
+    const {dates,options} = useContext(SearchContext)
+    console.log(dates)
+
+
+    const  daydifferece = (date1,date2) => {
+        const seconds_per_days = 1000 * 60 * 60 * 24
+        const timediff = Math.abs(date2.getTime() - date1.getTime())
+        const daydiff = Math.ceil(timediff / seconds_per_days)
+        return daydiff
+    }
+    const day = daydifferece(dates[0].endDate , dates[0].startDate)
     return (
         <div>
             <Navbar />
@@ -75,7 +68,7 @@ function Hotel(props) {
                         />
                         <div className="slider-wrapper">
                             <img
-                                src={data.photos[slidenumber].src}
+                                src={data.photos[slidenumber]}
                                 alt=""
                                 className="slider-img"
                             />
@@ -121,13 +114,13 @@ function Hotel(props) {
                         </div>
                         <div className="hotel-detail-price">
                             <h1>
-                                Perfect for 9-night stay
+                                Perfect for {day}-night stay
                             </h1>
                             <span>
                                 Located in the real heart of sergse , this property has an excellent location score of 9.8
                             </span>
                             <h2>
-                                <b>$945</b> (9 nights)
+                                <b>${day * data.cheapestPrice * options.room}</b> ({day} nights)
                             </h2>
                             <button>Reserve or Book now!</button>
                         </div>

@@ -12,14 +12,16 @@ function List(props) {
 
     const location = useLocation()
     const [destination,setDestination] = useState(location.state.destination)
-    const [date,setDate] = useState(location.state.date)
-    const [opendate,setOpenDate] = useState(false)
+    const [dates,setDates] = useState(location.state.dates)
+    const [opendates,setOpenDate] = useState(false)
 
     const [min, setMin] = useState(undefined);
     const [max, setMax] = useState(undefined);
 
-    const [options, setOptions] = useState(location.state.options)
 
+
+    const [options, setOptions] = useState(location.state.options)
+    console.log(destination,dates,options)
 
     const {data,loading,error,reFetch} = useFetch(`http://localhost:8080/api/hotels?city=${destination}&min=${min || 0}&max=${max || 999}`)
     const handleClick = ()=>{
@@ -49,17 +51,15 @@ function List(props) {
                         <div className="list-search-item">
                             <label>Check in date</label>
                             <span
-                                onClick={() => setOpenDate(!opendate)}
+                                onClick={() => setOpenDate(!opendates)}
                             >{
-                                `${format(date[0].startDate,"MM/dd/yyyy")}
+                                `${format(dates[0].startDate,"MM/dd/yyyy")}
                                  to
-                                 ${format(date[0].endDate,"MM/dd/yyyy")}`
+                                 ${format(dates[0].endDate,"MM/dd/yyyy")}`
                             }</span>
-                            { opendate &&   <DateRange
-                                // editableDateInputs={true}
-                                onChange={item => setDate([item.selection])}
-                                // moveRangeOnFirstSelection={false}
-                                ranges={date}
+                            { opendates &&   <DateRange
+                                onChange={item => setDates([item.selection])}
+                                ranges={dates}
                                 minDate={new Date()}
                                 className="listdate date"
                             />}
